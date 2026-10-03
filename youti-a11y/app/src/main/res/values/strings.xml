@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">题神·优题网</string>
+    <string name="xposed_description">题神·优题网：朗读/跟读评测改判满分、客观题判我对、hook 级跳过题目、hook 级自动听音、悬浮控制球。</string>
+</resources>

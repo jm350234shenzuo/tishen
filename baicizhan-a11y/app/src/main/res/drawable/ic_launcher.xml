@@ -1,0 +1,36 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <group android:name="bg">
+        <clip-path
+            android:pathData="M26,4h56a22,22 0 0 1 22,22v56a22,22 0 0 1 -22,22h-56a22,22 0 0 1 -22,-22v-56a22,22 0 0 1 22,-22z" />
+        <path android:fillColor="#FF071A4A" android:pathData="M0,0h108v28h-108z" />
+        <path android:fillColor="#FF0C2D80" android:pathData="M0,28h108v27h-108z" />
+        <path android:fillColor="#FF1150BE" android:pathData="M0,55h108v27h-108z" />
+        <path android:fillColor="#FF1877E8" android:pathData="M0,82h108v30h-108z" />
+    </group>
+    <path android:fillColor="#66102A66"
+        android:pathData="M25,9h58a16,16 0 0 1 16,16v58a16,16 0 0 1 -16,16h-58a16,16 0 0 1 -16,-16v-58a16,16 0 0 1 16,-16z" />
+    <group android:name="scan">
+        <path android:fillColor="#12FFFFFF" android:pathData="M14,34h80v1.4h-80z" />
+        <path android:fillColor="#12FFFFFF" android:pathData="M14,58h80v1.4h-80z" />
+        <path android:fillColor="#12FFFFFF" android:pathData="M14,82h80v1.4h-80z" />
+    </group>
+    <group android:name="chrome">
+        <path android:fillColor="#FF4ADE80" android:pathData="M16.4,17a2.6,2.6 0 1 1 5.2,0a2.6,2.6 0 1 1 -5.2,0z" />
+        <path android:fillColor="#FFFFC857" android:pathData="M25.4,17a2.6,2.6 0 1 1 5.2,0a2.6,2.6 0 1 1 -5.2,0z" />
+        <path android:fillColor="#FFFF6B6B" android:pathData="M34.4,17a2.6,2.6 0 1 1 5.2,0a2.6,2.6 0 1 1 -5.2,0z" />
+    </group>
+    <group android:name="hundred">
+        <path android:fillColor="#FFFFFFFF" android:pathData="M28,21h4v4h-4zM24,25h8v4h-8zM28,29h4v4h-4zM28,33h4v4h-4zM28,37h4v4h-4zM28,41h4v4h-4zM24,45h12v4h-12zM48,21h12v4h-12zM44,25h4v4h-4zM60,25h4v4h-4zM44,29h4v4h-4zM60,29h4v4h-4zM44,33h4v4h-4zM60,33h4v4h-4zM44,37h4v4h-4zM60,37h4v4h-4zM44,41h4v4h-4zM60,41h4v4h-4zM48,45h12v4h-12zM72,21h12v4h-12zM68,25h4v4h-4zM84,25h4v4h-4zM68,29h4v4h-4zM84,29h4v4h-4zM68,33h4v4h-4zM84,33h4v4h-4zM68,37h4v4h-4zM84,37h4v4h-4zM68,41h4v4h-4zM84,41h4v4h-4zM72,45h12v4h-12z" />
+    </group>
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M26,74 L47,93 L89,57"
+        android:strokeColor="#FF3DDC84"
+        android:strokeWidth="11"
+        android:strokeLineCap="square"
+        android:strokeLineJoin="miter" />
+</vector>

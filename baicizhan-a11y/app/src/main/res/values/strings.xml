@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">题神·百词斩</string>
+    <string name="xposed_description">题神·百词斩：答题结果改判为正确（只改写提交给服务器的那份数据）、答错也判对、hook 级跳过题目、hook 级自动听音、悬浮控制球。</string>
+</resources>
