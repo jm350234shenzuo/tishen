@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "io.dsh.bcz.a11y"
+    namespace = "io.github.jm350234shenzuo.bcz.a11y"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "io.dsh.bcz.a11y"
+        applicationId = "io.github.jm350234shenzuo.bcz.a11y"
         minSdk = 23
         targetSdk = 34
         versionCode = 1

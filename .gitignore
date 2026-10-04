@@ -1,12 +1,8 @@
-# Gradle / Android build output
+*.apk
 build/
 .gradle/
-local.properties
-*.iml
-.idea/
-.DS_Store
-# 签名密钥（自行生成，勿入库）
 *.keystore
 *.jks
-# 允许提交发布包
-!dist/*.apk
+local.properties
+.idea/
+*.iml

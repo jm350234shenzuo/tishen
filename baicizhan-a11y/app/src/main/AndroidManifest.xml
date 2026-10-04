@@ -27,7 +27,7 @@
 
         <provider
             android:name=".ConfigProvider"
-            android:authorities="io.dsh.bcz.a11y.config"
+            android:authorities="io.github.jm350234shenzuo.bcz.a11y.config"
             android:exported="true" />
 
         <meta-data
