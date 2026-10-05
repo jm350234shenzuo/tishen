@@ -6,7 +6,7 @@
 
 **天学网 增强模块 · LSPosed / Vector**
 
-![version](https://img.shields.io/badge/version-1.1-blue)
+![version](https://img.shields.io/badge/version-1.2-blue)
 ![framework](https://img.shields.io/badge/framework-LSPosed%20%7C%20Vector-9cf)
 ![android](https://img.shields.io/badge/Android-7.0%2B%20(minSdk%2023)-green)
 ![purpose](https://img.shields.io/badge/用途-学习研究-orange)
@@ -23,7 +23,7 @@
 | --- | --- |
 | **看得清** | 界面字号缩放、夜间/护眼配色、减弱动画 |
 | **点得准** | 放大点击热区，小按钮也点得到 |
-| **判我对** | 答题判定接管：选对即记为正确 |
+| **判你赢了** | 答题判定接管：选对即记为正确 |
 | **朗读/读单词评分（改判满分）** | 本地语音评测结果改写，读单词直接满分 |
 | **自动听音** | 自动连播单词发音 |
 | **想得久一点** | 答题倒计时放宽 / 不限时 |
@@ -38,7 +38,7 @@
 
 ## 安装
 
-1. 到 [Releases](../../releases) 下载 `tianxuewang-a11y-1.1.apk` 并安装；
+1. 到 [Releases](../../releases) 下载 `tianxuewang-a11y-1.2.apk` 并安装；
 2. 打开框架管理器（LSPosed / Vector）→ **模块** → 勾选「题神·天学网」；
 3. 在模块的**作用域**里勾选 天学网（`com.up366.mobile`）；
 4. 强制停止目标 App（或重启手机）后重新打开。
@@ -72,8 +72,11 @@ A：LSPosed 与 Vector（同源分支）均已验证，安装方式一致。
 
 已在 LSPosed 官方模块仓库收录：https://modules.lsposed.org/module/io.github.jm350234shenzuo.txw.a11y/
 
-## ## 更新日志
+## 更新日志
 
+### 1.2
+- 「判我对」统一改名为「判你赢了」。
+- 修复 1.1 安装包漏带的界面改动：悬浮控制球面板里那几个点了没反应的按钮（跳过本题 / 找不到按钮 / 校准 / 试按 / 自动跳过）已彻底移除，悬浮球上的字也由「跳」改为「神」。
 ### 1.1
 - 设置页全新改版：卡片化布局，跟随系统深浅色（也可手动指定浅色 / 深色）。
 - 悬浮控制球面板重做：圆角卡片、按下反馈，只保留实际可用的功能。
