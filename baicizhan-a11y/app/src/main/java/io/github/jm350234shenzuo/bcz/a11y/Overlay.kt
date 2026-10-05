@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.StateListDrawable
 import android.util.DisplayMetrics
 import android.view.Gravity
 import android.view.MotionEvent
@@ -18,7 +19,7 @@ import kotlin.math.abs
 
 /**
  * 悬浮控制球（不含朗读）。轻点展开面板，按住可上下拖动。
- * 面板：跳过本题 / 自动跳过开关 / 听音 / 自动听音开关 / 字体＋－ / 收起。
+ * 面板：听音 / 自动听音开关 / 字体＋－ / 收起。
  */
 object Overlay {
 
@@ -28,7 +29,6 @@ object Overlay {
     private var owner: java.lang.ref.WeakReference<Activity>? = null
     private var ball: View? = null
     private var panel: View? = null
-    private var autoBtn: TextView? = null
     private var listenBtn: TextView? = null
 
     fun attach(act: Activity, cfg: Cfg) {
@@ -158,57 +158,29 @@ object Overlay {
         box.tag = Skip.OWN_TAG
         val bg = GradientDrawable()
         bg.shape = GradientDrawable.RECTANGLE
-        bg.cornerRadius = dp(dm, 14f).toFloat()
-        bg.setColor(Color.parseColor("#E6202124"))
+        bg.cornerRadius = dp(dm, 16f).toFloat()
+        bg.setColor(Color.parseColor("#F2181C22"))
+        bg.setStroke(dp(dm, 1f).coerceAtLeast(1), Color.parseColor("#3A4250"))
         box.background = bg
+
+        val head = TextView(act)
+        head.text = "题神 · 控制球"
+        head.textSize = 12f
+        head.setTextColor(Color.parseColor("#8FA0B4"))
+        head.gravity = Gravity.CENTER
+        head.tag = Skip.OWN_TAG
+        head.setPadding(0, 0, 0, dp(dm, 6f))
+        box.addView(head)
+
+        val hint = TextView(act)
+        hint.text = "长按小球可拖动 · 点「收起」隐藏面板"
+        hint.textSize = 11f
+        hint.setTextColor(Color.parseColor("#6E7C8C"))
+        hint.gravity = Gravity.CENTER
+        hint.tag = Skip.OWN_TAG
+        hint.setPadding(0, 0, 0, dp(dm, 8f))
+        box.addView(hint)
         box.visibility = View.GONE
-
-        val skip = btn(act, dm, "跳过本题")
-        skip.setOnClickListener {
-            val a = Skip.activity()
-            if (a == null) {
-                XposedBridge.log(TAG + " manual skip: no activity")
-            } else {
-                val ok = Skip.now(a, true)
-                XposedBridge.log(TAG + " manual skip ok=" + ok + " " + Skip.lastResult)
-                if (!ok) android.widget.Toast.makeText(a, Skip.lastResult, android.widget.Toast.LENGTH_SHORT).show()
-            }
-        }
-        box.addView(skip)
-
-        val pick = btn(act, dm, "找不到按钮？")
-        pick.setOnClickListener {
-            val a = Skip.activity()
-            if (a != null) Skip.picker(a)
-        }
-        box.addView(pick)
-
-        val calib = btn(act, dm, "校准点击位置")
-        calib.setOnClickListener {
-            val a = Skip.activity()
-            if (a != null) Skip.startCalibration(a)
-        }
-        box.addView(calib)
-
-        val tapTest = btn(act, dm, "试按校准位置")
-        tapTest.setOnClickListener {
-            val a = Skip.activity()
-            if (a != null) Skip.tapCalib(a, true)
-        }
-        tapTest.setOnLongClickListener {
-            Skip.clearCalib()
-            Skip.say(Skip.activity(), "已清除校准位置")
-            true
-        }
-        box.addView(tapTest)
-
-        val auto = btn(act, dm, autoLabel())
-        auto.setOnClickListener {
-            Skip.toggleAuto()
-            auto.text = autoLabel()
-        }
-        autoBtn = auto
-        box.addView(auto)
 
         val listen = btn(act, dm, "听音")
         listen.setOnClickListener {
@@ -248,26 +220,44 @@ object Overlay {
         return box
     }
 
-    private fun btn(ct: Context, dm: DisplayMetrics, label: String): TextView {
+    private fun btn(ct: Context, dm: DisplayMetrics, label: String, accent: Boolean = false): TextView {
         val tv = TextView(ct)
         tv.text = label
-        tv.textSize = 15f
+        tv.textSize = 14.5f
         tv.setTextColor(Color.WHITE)
         tv.gravity = Gravity.CENTER
         tv.tag = Skip.OWN_TAG
+        tv.isClickable = true
         tv.setPadding(dp(dm, 14f), dp(dm, 9f), dp(dm, 14f), dp(dm, 9f))
+        val lp = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        lp.topMargin = dp(dm, 4f)
+        tv.layoutParams = lp
+        val fill = if (accent) "#FF3B6FE0" else "#26FFFFFF"
+        val down = if (accent) "#CC2E58B4" else "#40FFFFFF"
+        val line = if (accent) "#FF5B8CF5" else "#33FFFFFF"
+        val states = StateListDrawable()
+        states.addState(intArrayOf(android.R.attr.state_pressed), pill(dm, Color.parseColor(down), line))
+        states.addState(intArrayOf(), pill(dm, Color.parseColor(fill), line))
+        tv.background = states
         return tv
     }
 
-    private fun autoLabel(): String = if (Skip.isAuto()) "自动跳过：开" else "自动跳过：关"
+    private fun pill(dm: DisplayMetrics, fill: Int, line: String): GradientDrawable {
+        val d = GradientDrawable()
+        d.shape = GradientDrawable.RECTANGLE
+        d.cornerRadius = dp(dm, 10f).toFloat()
+        d.setColor(fill)
+        d.setStroke(dp(dm, 1f).coerceAtLeast(1), Color.parseColor(line))
+        return d
+    }
 
     private fun listenLabel(): String = if (AutoListen.isAuto()) "自动听音：开" else "自动听音：关"
 
     private fun togglePanel() {
         val p = panel ?: return
         p.visibility = if (p.visibility == View.VISIBLE) View.GONE else View.VISIBLE
-        val a = autoBtn
-        if (a != null) a.text = autoLabel()
         val l = listenBtn
         if (l != null) l.text = listenLabel()
     }
