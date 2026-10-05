@@ -3,7 +3,6 @@ package io.github.jm350234shenzuo.bcz.a11y
 import android.app.Activity
 import android.content.Context
 import android.content.res.Configuration
-import android.os.SystemClock
 import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedBridge
 import de.robv.android.xposed.XposedHelpers
@@ -20,7 +19,6 @@ object Hooks {
         guarded("font/theme") { hookFontAndTheme(cl) }
         guarded("motion") { hookMotion(cl) }
         guarded("lifecycle") { hookLifecycle(cl) }
-        guarded("timer") { hookTimer(cl) }
         guarded("auto-listen") { AutoListen.install(cl) }
         guarded("rewrite") { Rewrite.install(cl) }
         guarded("force") { Force.install(cl) }
@@ -128,35 +126,4 @@ object Hooks {
             })
     }
 
-    // ----------------------------------------------------------------- timer
-
-    private fun hookTimer(cl: ClassLoader) {
-        XposedHelpers.findAndHookMethod(
-            "android.os.CountDownTimer", cl, "start",
-            object : XC_MethodHook() {
-                override fun afterHookedMethod(param: MethodHookParam) {
-                    val c = appCtx ?: return
-                    val cfg = Config.get(c)
-                    val mul = cfg.timerMul
-                    val unlimited = cfg.timerUnlimited
-                    if (mul <= 1.0f && !unlimited) return
-                    val self = param.thisObject ?: return
-                    val base = try {
-                        XposedHelpers.getLongField(self, "mMillisInFuture")
-                    } catch (_: Throwable) {
-                        return
-                    }
-                    if (base <= 0L) return
-                    val span = if (unlimited) Long.MAX_VALUE / 8 else (base.toDouble() * mul).toLong()
-                    try {
-                        XposedHelpers.setLongField(
-                            self, "mStopTimeInFuture",
-                            SystemClock.elapsedRealtime() + span
-                        )
-                    } catch (t: Throwable) {
-                        XposedBridge.log("[BCZ-A11Y] timer: " + t)
-                    }
-                }
-            })
-    }
 }
