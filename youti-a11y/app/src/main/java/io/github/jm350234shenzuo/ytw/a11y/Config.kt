@@ -24,6 +24,7 @@ object Keys {
     const val SPEAK_ON_OPEN = "speak_on_open"
     const val TIMER_MUL = "timer_mul"
     const val TIMER_UNLIMITED = "timer_unlimited"
+    const val UI_THEME = "ui_theme"
 
     const val DEFAULT_TARGETS = "com.ytw.app"
 }
