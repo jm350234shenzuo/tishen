@@ -1,6 +1,6 @@
 # 题神 · TiShen —— LSPosed 模块集合
 
-针对三个学习类 App 的 LSPosed 增强模块（判分接管 / 跳过题目），每个模块独立发布。
+针对三个学习类 App 的 LSPosed 增强模块（判分接管 / 无障碍增强），每个模块独立发布。
 
 | 模块 | 模块包名 | 目标应用 | 独立仓库 |
 | --- | --- | --- | --- |
@@ -8,7 +8,7 @@
 | 题神·天学网 | `io.github.jm350234shenzuo.txw.a11y` | `com.up366.mobile` | [io.github.jm350234shenzuo.txw.a11y](https://github.com/jm350234shenzuo/io.github.jm350234shenzuo.txw.a11y) |
 | 题神·优题网 | `io.github.jm350234shenzuo.ytw.a11y` | `com.ytw.app` | [io.github.jm350234shenzuo.ytw.a11y](https://github.com/jm350234shenzuo/io.github.jm350234shenzuo.ytw.a11y) |
 
-三个 APK 分别在各自的仓库 Releases 中发布（tag `1-1.0`）；本仓库是源码与构建脚本总仓。
+三个 APK 分别在各自的仓库 Releases 中发布（最新 tag `3-1.2`）；本仓库是源码与构建脚本总仓。
 
 ## 目录
 
@@ -35,7 +35,7 @@ build-all.cmd
 
 ## LSPosed 模块仓库
 
-三个模块均已向 [Xposed-Modules-Repo/submission](https://github.com/Xposed-Modules-Repo/submission) 提交收录申请（`[submission] io.github.jm350234shenzuo.*`），收录后可在 LSPosed 的模块列表里直接搜索到。
+三个模块均已收录进 LSPosed 官方模块仓库（https://modules.lsposed.org/），在 LSPosed / Vector 的模块仓库里搜索「题神」或包名前缀 `io.github.jm350234shenzuo` 即可找到。
 
 ## 免责声明
 
