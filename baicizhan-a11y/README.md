@@ -1,49 +1,90 @@
-# 百词斩无障碍助手 (百词斩 A11y)
+<div align="center">
 
-一个 LSPosed 模块，用于让视障、肢障、认知障碍用户能更顺利地使用「百词斩」做题/背单词。
-只做可访问性增强与操作代劳，全程离线，不触碰学习数据。
+<img src="icon.png" width="128" alt="题神·百词斩">
+
+# 题神·百词斩
+
+**百词斩 增强模块 · LSPosed / Vector**
+
+![version](https://img.shields.io/badge/version-1.1-blue)
+![framework](https://img.shields.io/badge/framework-LSPosed%20%7C%20Vector-9cf)
+![android](https://img.shields.io/badge/Android-7.0%2B%20(minSdk%2023)-green)
+![purpose](https://img.shields.io/badge/用途-学习研究-orange)
+
+包名 `io.github.jm350234shenzuo.bcz.a11y` · 作用域 `com.jiongji.andriod.card`
+
+</div>
+
+---
 
 ## 功能
 
-| 功能 | 面向 | 说明 |
-| --- | --- | --- |
-| 字体放大 1.0–2.0 倍 | 低视力 | 通过 Configuration.fontScale 全局生效 |
-| 强制浅色 / 深色 | 低视力、光敏感 | 覆盖 App 的日夜模式 |
-| 降低动画 | 光敏感、晕动 | 把动画时长归零，减少闪烁位移 |
-| 加大点击区域 | 肢障、精细动作困难 | 小按钮扩到 48dp |
-| 悬浮控制球 | 通用 | 可拖动；面板里一键跳过本题、开关自动跳过/自动听音、放大缩小文字 |
-| 跳过本题（hook 级） | 肢障、认知障碍 | 直接调用 App 自己注册的点击处理器触发原有逻辑，优先于模拟点击 |
-| 自动跳过 | 无法连续操作 | 打开后持续扫描并按文字代点已有按钮 |
-| 网页(H5)按钮识别 | 通用 | hook 页面 addEventListener，直接调用页面自己的回调 |
-| 自动关弹窗 | 视障、认知障碍 | 按关键词关闭广告/推荐类弹窗 |
-| 自动听音（hook 级） | 省操作 | 直接调用 App 自己的「听音」按钮处理器播放题目发音，省一次手动按键 |
-| 保持常亮 / 解除方向锁 | 肢障 | 答题时不黑屏、屏幕可旋转 |
-| 答题计时放宽/不限时 | 认知、行动不便 | 把倒计时按倍数放宽，不影响学习记录 |
+| 功能 | 说明 |
+| --- | --- |
+| **看得清** | 界面字号缩放、夜间/护眼配色、减弱动画 |
+| **点得准** | 放大点击热区，小按钮也点得到 |
+| **判我对** | 答题判定接管：选对即记为正确，不再受提交结果影响 |
+| **答题结果改写** | 提交服务器前改写记录字段（可关闭） |
+| **自动听音** | 自动连播单词发音 |
+| **悬浮控制球** | 常驻小球：一键听音、自动听音开关、字号加减 |
+| **设置页外观** | 跟随系统深浅色，也可手动指定浅色 / 深色 |
 
-## 安装（4 步）
+## 环境要求
 
-1. 安装 app/build/outputs/apk/release/baicizhan-a11y-1.0.apk（或仓库根目录同名 APK）。
-2. 打开 LSPosed → 模块，启用本模块，作用域勾选「百词斩」。
-3. 强行停止「百词斩」并重新打开。
-4. 打开本模块的设置页（桌面图标「百词斩无障碍助手」）做进一步设置；每次改设置后需重启一次 百词斩 才生效。
+- Android 7.0 及以上（minSdk 23 / targetSdk 34）
+- 框架：**LSPosed**、**Vector**（JingMatrix 分支）或 EdXposed
+- 使用 Zygisk 版框架时需 Magisk / KernelSU 并启用 Zygisk
 
-目标包名默认：com.jiongji.andriod.card、com.jiongji.andriod.pocket（可在设置页增删）。
+## 安装
 
-## 边界说明
+1. 到 [Releases](../../releases) 下载 `baicizhan-a11y-1.1.apk` 并安装；
+2. 打开框架管理器（LSPosed / Vector）→ **模块** → 勾选「题神·百词斩」；
+3. 在模块的**作用域**里勾选 百词斩（`com.jiongji.andriod.card`）；
+4. 强制停止目标 App（或重启手机）后重新打开。
 
-- 跳过 = 代点屏幕上已经存在的按钮，通过 Xposed hook 拿到 App 自己注册的 onClick 后直接调用，全程只触发 App 已有的逻辑。
-- 自动听音 = 代点「听音」按钮，播放的是 App 自己提供的题目发音，不是屏幕朗读、也不朗读题干文字。
-- 不自动答题、不伪造/修改学习记录、不绕过会员付费内容。
+> 首次启用建议强停目标 App，让 hook 重新加载。本模块**不写任何日志文件**。
 
-## 技术实现
+## 使用
 
-- Xposed 编译期桩（xposed-api 子工程，纯 JDK 桩类），不依赖 api.xposed.info 仓库。
-- 跳过引擎：hook View#setOnClickListener 捕获 App 自身监听器；hook View#performClick 做侦查学习；WebView#addJavascriptInterface + evaluateJavascript 注入脚本 hook 页面 EventTarget.prototype.addEventListener。
-- 自动听音：hook TextView#setText / View#setContentDescription 侦测界面变化；hook MediaPlayer#start / SoundPool#play 标记已播防重播；稳定延迟后每屏最多播一次，优先调用捕获到的 App 自身 onClick。
-- 配置经 XSharedPreferences（baicizhan-a11y / prefs 文件 config）读写，模块与设置页同源。
+- 打开「题神·百词斩」设置页，按需开关各项功能；
+- 设置页默认跟随系统深浅色，也可在「外观（本设置页）」里手动指定；
+- 进入目标 App 后屏幕边缘会出现**悬浮控制球**，点一下展开面板：听音、自动听音、字号加减、收起。
 
-## 构建
+## 常见问题
 
-build.cmd
+**Q：模块能勾选，但进 App 没反应？**
+A：确认作用域勾了目标 App，再**强制停止**目标 App 后重开；同时在模块设置页确认对应开关已打开。
 
-产物 app/build/outputs/apk/release/baicizhan-a11y-1.0.apk，签名密钥 app/release.keystore（store/key 口令均为 bcz123456，别名 bcz）。
+**Q：会写日志吗？**
+A：不会。当前版本已移除全部日志写盘。
+
+**Q：设置页是黑的/白的，能改吗？**
+A：默认跟随系统；在设置页「外观（本设置页）」里可选 跟随系统 / 浅色 / 深色。
+
+**Q：会不会被 App 检测 / 封号？**
+A：本模块修改 App 运行行为，存在被风控识别或功能随时失效的风险，请自行评估，建议先用小号验证。
+
+**Q：支持哪些框架？**
+A：LSPosed 与 Vector（同源分支）均已验证，安装方式一致。
+
+## 收录状态
+
+已在 LSPosed 官方模块仓库收录：https://modules.lsposed.org/module/io.github.jm350234shenzuo.bcz.a11y/
+
+## ## 更新日志
+
+### 1.1
+- 设置页全新改版：卡片化布局，跟随系统深浅色（也可手动指定浅色 / 深色）。
+- 悬浮控制球面板重做：圆角卡片、按下反馈，只保留实际可用的功能。
+- 移除「想得久一点」（百词斩本身答题不限时）。
+- 说明与安装包对齐，去掉已不存在功能的条目。
+
+### 1.0
+- 首个公开版本：判分接管、无障碍增强、悬浮控制球。
+## 源码
+
+https://github.com/jm350234shenzuo/tishen —— 本仓库按 LSPosed 模块仓库约定只放说明与发行包，不含源码。
+
+## 免责声明
+
+本模块仅供**个人学习、无障碍辅助与自动化测试研究**使用；请勿用于违反目标 App 服务条款的用途，使用产生的一切后果由使用者自行承担。
