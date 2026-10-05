@@ -123,7 +123,7 @@ class SettingsActivity : Activity() {
                     "2. 先在本页设置好，再强行停止优题网并重新打开。\n" +
                     "3. 以后每次改设置，都要重启一次优题网才生效。\n\n" +
                     "本模块除可访问性增强（放大文字、自动听音、加大点击区域、降低动画、放宽答题计时）外，" +
-                    "还可在开启对应开关时改写本机提交的答题报文与分数（判我对 / 评分满分）。所有开关都在本页，可单独关闭。"
+                    "还可在开启对应开关时改写本机提交的答题报文与分数（判你赢了 / 评分满分）。所有开关都在本页，可单独关闭。"
             )
         )
 
@@ -189,7 +189,7 @@ class SettingsActivity : Activity() {
             putBool(Keys.BIG_TOUCH, it)
         })
         // ----------------------------------------------------------- force
-        box.addView(Ui.title(this, "判我对（跳过但记为正确）"))
+        box.addView(Ui.title(this, "判你赢了（跳过但记为正确）"))
         box.addView(
             Ui.body(
                 this,
@@ -199,9 +199,9 @@ class SettingsActivity : Activity() {
                     "App 因此直接进入下一题（等于跳过，但这一题记为正确）。"
             )
         )
-        box.addView(Ui.switchRow(this, "启用「判我对」", sp.getBoolean(ForceKeys.ENABLED, true)) {
+        box.addView(Ui.switchRow(this, "启用「判你赢了」", sp.getBoolean(ForceKeys.ENABLED, true)) {
             putBool(ForceKeys.ENABLED, it)
-            toast(if (it) "已开启：答错也判对" else "已关闭判我对")
+            toast(if (it) "已开启：答错也判对" else "已关闭判你赢了")
         })
 
         // ---------------------------------------------------------- score
@@ -221,7 +221,7 @@ class SettingsActivity : Activity() {
             toast(if (it) "已开启：评分抬到满分" else "已关闭评分改写")
         })
         // ---------------------------------------------------------------- net
-        box.addView(Ui.title(this, "网络回包改写（判我对的最后一层）"))
+        box.addView(Ui.title(this, "网络回包改写（判你赢了的最后一层）"))
         box.addView(
             Ui.body(
                 this,
