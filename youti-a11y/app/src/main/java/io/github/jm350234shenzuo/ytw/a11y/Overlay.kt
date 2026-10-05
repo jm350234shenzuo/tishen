@@ -71,7 +71,6 @@ object Overlay {
         panel = null
         host = null
         owner = null
-        autoBtn = null
         listenBtn = null
     }
 
@@ -102,7 +101,7 @@ object Overlay {
 
     private fun buildBall(act: Activity, dm: DisplayMetrics): View {
         val tv = TextView(act)
-        tv.text = "跳"
+        tv.text = "神"
         tv.textSize = 20f
         tv.setTextColor(Color.WHITE)
         tv.gravity = Gravity.CENTER
