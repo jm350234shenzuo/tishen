@@ -34,12 +34,17 @@ if not "%RC%"=="0" (
 )
 
 set "APK=%HERE%\app\build\outputs\apk\release\app-release.apk"
-set "OUT=%HERE%\tianxuewang-a11y-1.0.apk"
+set "VER="
+for /f "tokens=3" %%v in ('findstr /r /c:"versionName" "%HERE%\app\build.gradle.kts"') do set "VER=%%v"
+set VER=%VER:"=%
+if "%VER%"=="" set "VER=unknown"
+set "OUT=%HERE%\tianxuewang-a11y-%VER%.apk"
 if not exist "%APK%" (
   echo [3/3] APK not found at %APK%
   exit /b 1
 )
 copy /y "%APK%" "%OUT%" >nul
+for %%f in ("%HERE%\tianxuewang-a11y-*.apk") do if /i not "%%~nxf"=="tianxuewang-a11y-%VER%.apk" del /q "%%~ff" >nul 2>nul
 echo [3/3] done.
 echo   %OUT%
 endlocal
