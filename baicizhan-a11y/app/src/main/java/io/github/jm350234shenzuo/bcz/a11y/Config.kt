@@ -22,8 +22,7 @@ object Keys {
     const val OVERLAY = "overlay"
     const val TTS_RATE = "tts_rate"
     const val SPEAK_ON_OPEN = "speak_on_open"
-    const val TIMER_MUL = "timer_mul"
-    const val TIMER_UNLIMITED = "timer_unlimited"
+    const val UI_THEME = "ui_theme"
 
     const val DEFAULT_TARGETS = "com.jiongji.andriod.card,com.jiongji.andriod.pocket"
 }
@@ -37,9 +36,7 @@ data class Cfg(
     val bigTouch: Boolean = false,
     val overlay: Boolean = true,
     val ttsRate: Float = 0.85f,
-    val speakOnOpen: Boolean = false,
-    val timerMul: Float = 1.0f,
-    val timerUnlimited: Boolean = false
+    val speakOnOpen: Boolean = false
 ) {
     fun covers(pkg: String?): Boolean =
         pkg != null && (targets.contains("*") || targets.contains(pkg))
@@ -48,7 +45,6 @@ data class Cfg(
 /** Process-local, non persistent tweaks driven by the in-app floating control. */
 object Live {
     @Volatile var fontScale: Float? = null
-    @Volatile var timerUnlimited: Boolean? = null
 }
 
 object Prefs {
@@ -72,8 +68,6 @@ object Prefs {
         o.put(Keys.OVERLAY, sp.getBoolean(Keys.OVERLAY, d.overlay))
         o.put(Keys.TTS_RATE, sp.getFloat(Keys.TTS_RATE, d.ttsRate).toDouble())
         o.put(Keys.SPEAK_ON_OPEN, sp.getBoolean(Keys.SPEAK_ON_OPEN, d.speakOnOpen))
-        o.put(Keys.TIMER_MUL, sp.getFloat(Keys.TIMER_MUL, d.timerMul).toDouble())
-        o.put(Keys.TIMER_UNLIMITED, sp.getBoolean(Keys.TIMER_UNLIMITED, d.timerUnlimited))
         return o.toString()
     }
 
@@ -89,9 +83,7 @@ object Prefs {
             bigTouch = o.optBoolean(Keys.BIG_TOUCH, d.bigTouch),
             overlay = o.optBoolean(Keys.OVERLAY, d.overlay),
             ttsRate = o.optDouble(Keys.TTS_RATE, d.ttsRate.toDouble()).toFloat(),
-            speakOnOpen = o.optBoolean(Keys.SPEAK_ON_OPEN, d.speakOnOpen),
-            timerMul = o.optDouble(Keys.TIMER_MUL, d.timerMul.toDouble()).toFloat(),
-            timerUnlimited = o.optBoolean(Keys.TIMER_UNLIMITED, d.timerUnlimited)
+            speakOnOpen = o.optBoolean(Keys.SPEAK_ON_OPEN, d.speakOnOpen)
         )
     }
 
@@ -106,9 +98,7 @@ object Prefs {
             bigTouch = sp.getBoolean(Keys.BIG_TOUCH, d.bigTouch),
             overlay = sp.getBoolean(Keys.OVERLAY, d.overlay),
             ttsRate = sp.getFloat(Keys.TTS_RATE, d.ttsRate),
-            speakOnOpen = sp.getBoolean(Keys.SPEAK_ON_OPEN, d.speakOnOpen),
-            timerMul = sp.getFloat(Keys.TIMER_MUL, d.timerMul),
-            timerUnlimited = sp.getBoolean(Keys.TIMER_UNLIMITED, d.timerUnlimited)
+            speakOnOpen = sp.getBoolean(Keys.SPEAK_ON_OPEN, d.speakOnOpen)
         )
     }
 }
@@ -137,13 +127,8 @@ object Config {
     }
 
     private fun apply(live: Live, base: Cfg): Cfg {
-        val f = live.fontScale
-        val t = live.timerUnlimited
-        if (f == null && t == null) return base
-        return base.copy(
-            fontScale = f ?: base.fontScale,
-            timerUnlimited = t ?: base.timerUnlimited
-        )
+        val f = live.fontScale ?: return base
+        return base.copy(fontScale = f)
     }
 
     private fun load(ctx: Context?): Cfg {
@@ -172,9 +157,7 @@ object Config {
                     bigTouch = p.getBoolean(Keys.BIG_TOUCH, false),
                     overlay = p.getBoolean(Keys.OVERLAY, true),
                     ttsRate = p.getFloat(Keys.TTS_RATE, 0.85f),
-                    speakOnOpen = p.getBoolean(Keys.SPEAK_ON_OPEN, false),
-                    timerMul = p.getFloat(Keys.TIMER_MUL, 1.0f),
-                    timerUnlimited = p.getBoolean(Keys.TIMER_UNLIMITED, false)
+                    speakOnOpen = p.getBoolean(Keys.SPEAK_ON_OPEN, false)
                 )
             }
         } catch (t: Throwable) {
