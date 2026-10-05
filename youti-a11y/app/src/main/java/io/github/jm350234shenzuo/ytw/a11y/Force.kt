@@ -11,13 +11,13 @@ import java.lang.reflect.Modifier
 import java.util.Collections
 import java.util.regex.Pattern
 
-/** 配置键：与设置页「判我对」开关一一对应。 */
+/** 配置键：与设置页「判你赢了」开关一一对应。 */
 object ForceKeys {
     const val ENABLED = "fw_enabled"
 }
 
 /**
- * 「判我对」：答错也当成答对，App 因此直接进入下一题（等于跳过，但这一题记为正确）。
+ * 「判你赢了」：答错也当成答对，App 因此直接进入下一题（等于跳过，但这一题记为正确）。
  *
  * 四层下手（从最精确到最兜底）：
  *  0) 精确名单 EXACT：优题网真机包（com.ytw.app 2.13.27，无加固、业务层未混淆）的 DEX 方法索引取到的判定入口，
@@ -125,7 +125,7 @@ object Force {
         }
         scheduleTicks()
         hookDtoRead(cl)
-        flog("force installed（判我对已装载）")
+        flog("force installed（判你赢了已装载）")
     }
 
     /** 学习页进出：进入时放开扫描范围（类名被混淆的判定类只有在这个窗口才扫得到）。 */
