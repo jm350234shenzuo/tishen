@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.EditText
@@ -17,6 +18,19 @@ import android.widget.Toast
 import java.util.Locale
 
 class SettingsActivity : Activity() {
+
+    override fun attachBaseContext(newBase: Context) {
+        val mode = newBase.getSharedPreferences(Keys.PREFS, Context.MODE_PRIVATE)
+            .getInt(Keys.UI_THEME, 0)
+        if (mode == 0) {
+            super.attachBaseContext(newBase)
+            return
+        }
+        val conf = Configuration(newBase.resources.configuration)
+        val want = if (mode == 2) Configuration.UI_MODE_NIGHT_YES else Configuration.UI_MODE_NIGHT_NO
+        conf.uiMode = (conf.uiMode and Configuration.UI_MODE_NIGHT_MASK.inv()) or want
+        super.attachBaseContext(newBase.createConfigurationContext(conf))
+    }
 
     private lateinit var sp: SharedPreferences
     private lateinit var box: LinearLayout
@@ -34,6 +48,7 @@ class SettingsActivity : Activity() {
             ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         )
         setContentView(scroll)
+        Ui.applyWindow(this)
         rebuild()
     }
 
@@ -82,6 +97,12 @@ class SettingsActivity : Activity() {
     }
 
     private fun rebuild() {
+        box.removeAllViews()
+        rebuildRaw()
+        Ui.cardify(this, box)
+    }
+
+    private fun rebuildRaw() {
         box.removeAllViews()
         val cur = Prefs.fromPrefs(sp)
 
@@ -134,6 +155,7 @@ class SettingsActivity : Activity() {
                 onChange = { putFloat(Keys.FONT_SCALE, it) }
             )
         )
+        box.addView(Ui.body(this, "目标 App 的日夜模式（作用在百词斩里，不是本页）："))
         val rg = RadioGroup(this)
         val opts = listOf("跟随系统" to 0, "强制浅色" to 1, "强制深色" to 2)
         for ((i, p) in opts.withIndex()) {
@@ -244,26 +266,27 @@ class SettingsActivity : Activity() {
             )
         )
 
-        // ------------------------------------------------------------- timer
-        box.addView(Ui.title(this, "想得久一点"))
-        box.addView(
-            Ui.body(
-                this,
-                "把答题倒计时按倍数放宽。这只影响界面上的计时器，" +
-                    "不会修改你的学习记录，也不会让结果变好看；" +
-                    "对行动或认知不便的用户属于常见的「延长作答时间」调整。"
-            )
-        )
-        box.addView(
-            Ui.slider(
-                this, "计时放宽倍数", 1.0f, 5.0f, 0.5f, cur.timerMul,
-                fmt = { x -> if (x <= 1.0f) "不调整" else String.format(Locale.US, "%.1f 倍", x) },
-                onChange = { putFloat(Keys.TIMER_MUL, it) }
-            )
-        )
-        box.addView(Ui.switchRow(this, "答题不限时", cur.timerUnlimited) {
-            putBool(Keys.TIMER_UNLIMITED, it)
-        })
+        // ------------------------------------------------------------- theme
+        box.addView(Ui.title(this, "外观（本设置页）"))
+        box.addView(Ui.body(this, "本页的深浅色，跟随系统或手动指定；目标 App 的深色在上面的「看得清」里设置。"))
+        val rgTheme = RadioGroup(this)
+        val themeOpts = listOf("跟随系统" to 0, "浅色" to 1, "深色" to 2)
+        for ((i, p) in themeOpts.withIndex()) {
+            val rbT = RadioButton(this)
+            rbT.text = p.first
+            rbT.id = 3000 + i
+            rbT.isChecked = sp.getInt(Keys.UI_THEME, 0) == p.second
+            rbT.textSize = 16f
+            rgTheme.addView(rbT)
+        }
+        rgTheme.setOnCheckedChangeListener { _, id ->
+            val i = id - 3000
+            if (i in themeOpts.indices) {
+                sp.edit().putInt(Keys.UI_THEME, themeOpts[i].second).commit()
+                recreate()
+            }
+        }
+        box.addView(rgTheme)
 
         box.addView(Ui.title(this, "说明"))
         box.addView(
