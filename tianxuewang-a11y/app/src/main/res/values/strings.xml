@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">题神·天学网</string>
-    <string name="xposed_description">题神·天学网：朗读/跟读评测改判满分、答错也判对、hook 级跳过题目、hook 级自动听音、悬浮控制球。</string>
+    <string name="xposed_description">题神·天学网：朗读/读单词评分改判满分、答错也判对、自动听音、字体放大与深色显示。</string>
 </resources>
