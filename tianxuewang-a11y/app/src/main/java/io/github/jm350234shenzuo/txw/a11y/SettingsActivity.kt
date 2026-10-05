@@ -123,7 +123,7 @@ class SettingsActivity : Activity() {
                     "2. 先在本页设置好，再强行停止天学网并重新打开。\n" +
                     "3. 以后每次改设置，都要重启一次天学网才生效。\n\n" +
                     "本模块只做可访问性增强：放大文字、自动听音、加大点击区域、降低动画、放宽答题计时。" +
-                    "开启「判我对 / 评分满分 / 回包改写」后，会改写本机提交的答题结果；这些开关都在本页，可单独关闭。"
+                    "开启「判你赢了 / 评分满分 / 回包改写」后，会改写本机提交的答题结果；这些开关都在本页，可单独关闭。"
             )
         )
 
@@ -189,7 +189,7 @@ class SettingsActivity : Activity() {
             putBool(Keys.BIG_TOUCH, it)
         })
         // ----------------------------------------------------------- force
-        box.addView(Ui.title(this, "判我对（跳过但记为正确）"))
+        box.addView(Ui.title(this, "判你赢了（跳过但记为正确）"))
         box.addView(
             Ui.body(
                 this,
@@ -198,9 +198,9 @@ class SettingsActivity : Activity() {
                     "学习页在前台时会放开扫描范围，连类名被混淆的判定类一起扫。"
             )
         )
-        box.addView(Ui.switchRow(this, "启用「判我对」", sp.getBoolean(ForceKeys.ENABLED, true)) {
+        box.addView(Ui.switchRow(this, "启用「判你赢了」", sp.getBoolean(ForceKeys.ENABLED, true)) {
             putBool(ForceKeys.ENABLED, it)
-            toast(if (it) "已开启：答错也判对" else "已关闭判我对")
+            toast(if (it) "已开启：答错也判对" else "已关闭判你赢了")
         })
 
         // ---------------------------------------------------------- score
